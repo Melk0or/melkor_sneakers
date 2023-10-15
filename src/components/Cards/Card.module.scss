@@ -1,0 +1,79 @@
+.card {
+  position: relative;
+  padding: 28px;
+  margin-bottom: 40px;
+  flex: 1 1 210px;
+  width: 210px;
+  border-radius: 40px;
+  border: 1px solid #F3F3F3;
+  transition: 0.2s linear;
+
+  img {
+    width: 85%;
+  }
+  p {
+    font-size: 14px;
+    text-align: left;
+    max-height: 33px;
+  }
+
+  &:hover {
+    box-shadow: 0px 14px 30px 0px rgba(0, 0, 0, 0.05);
+    transform: translateY(-30px);
+    &:before {
+      transform: translateY(31px);
+      opacity: 1;
+    }
+  }
+
+  &:before {
+    content: "Купи пж";
+    position: absolute;
+    bottom: 0;
+    left: 35%;
+    opacity: 0;
+    z-index: -1;
+    width: 100%;
+    font-size: 16px;
+    font-weight: 700;
+    transform: translateY(0px);
+    transition: .2s linear;
+
+  }
+}
+
+.like {
+
+  img {
+    position: absolute;
+    width: 32px;
+    cursor: pointer;
+  }
+}
+
+.cardPrice {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 15px;
+
+  img {
+    width: 32px;
+    cursor: pointer;
+  }
+}
+
+.cardPrice__info {
+
+  p {
+    color: #BDBDBD;
+    font-size: 11px;
+    font-weight: 500;
+    text-transform: uppercase;
+  }
+  span {
+    color: #000;
+    font-size: 14px;
+    font-weight: 700;
+  }
+}

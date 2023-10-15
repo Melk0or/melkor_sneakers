@@ -1,0 +1,109 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+
+*,
+*::after,
+*::before {
+  box-sizing: border-box;
+}
+
+h1, h2, h3, h4, h5, p {
+  margin: 0;
+}
+
+input , button {
+  font-family: Inter, sans-serif;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Inter, sans-serif;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  monospace;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  height: 100%;
+  background-color: #dfffdd;
+}
+
+.wrapper__inner {
+
+}
+
+.container {
+  max-width: 1080px;
+  margin: 0 auto;
+}
+
+.main {
+  flex-grow: 1;
+  padding-bottom: 20px;
+}
+
+.main__inner  {
+  background-color: #fff;
+  padding: 0px 60px 20px 60px;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+}
+
+.main_inner-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 40px 0;
+}
+
+@media (max-width: 600px) {
+  .main_inner-title {
+    flex-direction: column;
+  }
+}
+
+.search-section {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  flex-shrink: 1;
+  padding: 15px;
+  border-radius: 10px;
+  border: 1px solid #F3F3F3;
+  max-width: 300px;
+
+
+  input {
+    border: none;
+    font-size: 16px;
+    color: #646464;
+  }
+  input:focus {
+    outline: none;
+  }
+  input::placeholder {
+    color: #C4C4C4;
+    font-size: 14px;
+  }
+}
+
+.cards {
+  display: flex;
+  justify-content: space-evenly;
+  gap: 40px;
+  flex-wrap: wrap;
+  //display: grid;
+  //grid-template-columns: repeat(4, 1fr);
+  //justify-items: center;
+  //gap: 40px;
+}
