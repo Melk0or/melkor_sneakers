@@ -32,14 +32,14 @@ const Header = ({price, setIsOpenDrawer }) => {
 
                             <img src="/image/Union.svg" alt="Union" />
                             <p>Профиль</p>
-                            <span>3</span>
-                            <p className={headerStyles.delete}>Покупки</p>
+                            {/*<span>3</span>*/}
+                            {/*<p className={headerStyles.delete}>Покупки</p>*/}
 
-                            <div className={headerStyles.dropdown}>
-                                <div className={headerStyles.dropdownItem}>1.Nike Blazer</div>
-                                <div className={headerStyles.dropdownItem}>2.Nike Blazer</div>
-                                <div className={headerStyles.dropdownItem}>3.Nike Blazer</div>
-                            </div>
+                            {/*<div className={headerStyles.dropdown}>*/}
+                            {/*    <div className={headerStyles.dropdownItem}>1.Nike Blazer</div>*/}
+                            {/*    <div className={headerStyles.dropdownItem}>2.Nike Blazer</div>*/}
+                            {/*    <div className={headerStyles.dropdownItem}>3.Nike Blazer</div>*/}
+                            {/*</div>*/}
                         </div>
                     </div>
                 </div>

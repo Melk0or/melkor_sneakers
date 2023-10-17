@@ -8,7 +8,7 @@ const Card = ({name, price, url, onAdd, onFavorite}) => {
     const imgSrc = isAdded ? "added.svg" : "add.svg";
     //функция, инвертирующая значение isAdded при клике на кнопку
     const changeAddIcon = () => {
-        onAdd(name, price, url);
+        onAdd({name, price, url});
         setIsAdded(prev => !prev);
     }
     return (
