@@ -6,6 +6,10 @@ import axios, {options, post} from "axios";
 import {Route, Routes} from "react-router-dom";
 import Home from "./pages/Home";
 import Favorites from "./pages/Favorites";
+import AppContext from "./context";
+import DrawerCard from "./components/Drawer/DrawerCards/DrawerCard";
+import Orders from "./pages/Orders";
+
 
 function App() {
     //стейт для массива кроссовок
@@ -18,6 +22,8 @@ function App() {
     const [searchValue, setSearchValue] = useState("");
     ///стейт для отображения содержимого закладок
     const [favoriteCards, setFavoriteCards] = useState([]);
+    //стейт для отображения содержимого покупок
+    const [orderCards, setOrderCards] = useState([]);
     //стейт для отображения загрзки товаров из бэка
     const [isLoading, setIsLoading] = useState(true);
     //высчет тотал прайса корзины
@@ -31,12 +37,14 @@ function App() {
             //Выгружаем сохраненные в корзине и в закладках раньше товары через аксиос
             const drawerItems = await axios.get("https://652acf604791d884f1fd6097.mockapi.io/Drawer");
             const favoriteItems = await axios.get("https://652fe5f06c756603295de4fc.mockapi.io/Favorite");
+            const orderItems = await axios.get("https://652fe5f06c756603295de4fc.mockapi.io/Orders");
             //установка всех стейтов
             if (mainItems.status === 200 ) {
                 setIsLoading(prevState => prevState = false);
             }
             setDrawerCards(prevState => drawerItems.data);
             setFavoriteCards(prevState => favoriteItems.data);
+            setOrderCards(prevState => orderItems.data);
             // new Promise(resolve => {setItems(prevState => mainItems.data)});
             setTimeout(()=> setItems(prevState => mainItems.data), 0);
         })();
@@ -117,7 +125,8 @@ function App() {
                 //Тут обязательно нужно именно ЗАМЕНЯТЬ массив , а не просто пушить как в JS
                 onAdd = {onAddToDrawer}
                 isLoading = {isLoading}
-                added = {drawerCards.some(obj => obj.url === item.url)}
+                //Если в массиве фаворитов не найдется объекта с юрлом как у данной карточки, то иконка "добавлена в закладки" не отобразится
+                favorited = {favoriteCards.some(obj => obj.url === item.url)}
                 {...item}
             />)
 
@@ -135,40 +144,72 @@ function App() {
             isAddedToFavorite = {true}
         />)
 
-    return (
-        <div className="wrapper">
-            {isOpenDrawer ? <Drawer
-                totalPrice = {price}
-                drawerCards = {drawerCards}
-                setIsOpenDrawer = {setIsOpenDrawer}
-                onDelete ={onDeleteFromDrawer}/> : null
-            }
-            <Header price={price} setIsOpenDrawer={setIsOpenDrawer}/>
-            <Routes>
-                <Route
-                    path = "/"
-                    element=
-                    {
-                        <Home
-                            searchValue={searchValue}
-                            searchChange={searchChange}
-                            arrMap={arrMapForHome}
-                        />
-                    }
-                />
-                <Route
-                    path = "/favorites"
-                    element=
-                    {
-                        <Favorites arrMap={arrMapForFavorites}/>
-                    }
-                />
-                <Route
-                    path = "/profile"
+    //Наш массив покупок
+    let arrayForOrders = [];
+    //Фильтрация рендеринг списка кроссовок для страницы покупок. Мап используем для поля items orderCards , т.к. на беке они лежат именно так
+    const arrMapForOrders = orderCards.forEach(item => arrayForOrders = [...arrayForOrders, item.items
+        .map((item, index) => <Card
+            key = {index}
+            uniqId={item.id}
+            name = {item.name}
+            price = {item.price}
+            url = {item.url}
+            isOrder
+            //Тут обязательно нужно именно ЗАМЕНЯТЬ массив , а не просто пушить как в JS
+        />)])
+    console.log(arrayForOrders)
+    //рендеринг элементов корзины
+    const arrMapForDrawer = drawerCards
+        .map((item, index) => <DrawerCard
+            key = {index}
+            props = {item}
+            onDelete = {onDeleteFromDrawer}
+        />);
 
-                />
-            </Routes>
-        </div>
+    //проверка добавлен ли в корзину элемент
+    const isItemAdded = (url) => {
+        return  drawerCards.some(obj => obj.url === url);
+    }
+
+    return (
+       <AppContext.Provider value={{arrMapForHome, arrMapForFavorites, arrMapForDrawer, isItemAdded, setDrawerCards, drawerCards, arrayForOrders, setOrderCards}}>
+           <div className="wrapper">
+               {isOpenDrawer ? <Drawer
+                   totalPrice = {price}
+                   setIsOpenDrawer = {setIsOpenDrawer}
+                   /> : null
+               }
+               <Header price={price} setIsOpenDrawer={setIsOpenDrawer}/>
+               <Routes>
+                   <Route
+                       path = "/"
+                       element=
+                           {
+                               <Home
+                                   searchValue={searchValue}
+                                   searchChange={searchChange}
+                                   arrMap={arrMapForHome}
+                               />
+                           }
+                   />
+                   <Route
+                       path = "/favorites"
+                       element=
+                           {
+                               <Favorites/>
+                           }
+                   />
+                   <Route
+                       path = "/profile"
+                       element=
+                           {
+                                <Orders />
+                           }
+
+                   />
+               </Routes>
+           </div>
+       </AppContext.Provider>
     );
 }
 

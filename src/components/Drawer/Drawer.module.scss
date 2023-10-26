@@ -33,6 +33,7 @@
   }
 }
 
+
 .drawer__title {
   display: flex;
   justify-content: space-between;
@@ -41,12 +42,12 @@
   img {
     width: 40px;
     opacity: 0.4;
-    transition: .2s ease;
+    transition: .2s ease-in-out;
     transform: rotate(180deg);
     cursor: pointer;
   }
   img:hover {
-    transform: rotate(0deg);
+    transform: scale(1.2) rotate(0deg);
     opacity: 1;
   }
 }
@@ -60,7 +61,6 @@
 }
 
 .drawerTotalPrice {
-
 
   div {
     display: flex;
@@ -96,6 +96,12 @@
     cursor: pointer;
     transition: .3s ease-in-out;
 
+    &:disabled {
+      background-color: #bebebe !important;
+      animation: button-disabled .6s ease-in-out infinite;
+      cursor: default;
+    }
+
     img {
       position: absolute;
       top: 40%;
@@ -123,6 +129,7 @@
   flex-grow: 1;
 
   h2 {
+    margin-top: 10px;
     font-size: 22px;
     font-weight: 600;
   }
@@ -131,6 +138,7 @@
     font-size: 16px;
     line-height: 24px; /* 150% */
     opacity: 0.4;
+    margin-bottom: 30px;
   }
   button {
     position: relative;
@@ -163,6 +171,19 @@
     }
   }
 
+}
+
+
+@keyframes button-disabled {
+  0% {
+    filter: opacity(100%);
+  }
+  50% {
+    filter: opacity(70%);
+  }
+  100% {
+    filter: opacity(100%);
+  }
 }
 
 //.drawer__innerEmpty {

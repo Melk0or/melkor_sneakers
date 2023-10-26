@@ -10,7 +10,7 @@ const Header = ({price, setIsOpenDrawer }) => {
                         <img width={40} src="/image/logo.svg" alt="LogotipMelkorSneackers"/>
                         <div className={headerStyles.headerLeft__info}>
                             <h2>
-                                melkor sneackers
+                                melkor sneakers
                             </h2>
                             <p>Магазин лучших кроссовок</p>
                         </div>

@@ -1,26 +1,40 @@
 import cardStyles from "./Card.module.scss"
-import {useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import ContentLoader from "react-content-loader";
+import AppContext from "../../context";
 
-const Card = ({ name, price, url, onAdd, onFavorite, isAddedToFavorite = false, isLoading, added}) => {
+
+const Card = ({ name, price, url, onAdd, onFavorite, isAddedToFavorite = false, isLoading, favorited, isOrder}) => {
+    //Функция для проверки присутствия товара с определенным юрлом в корзине
+    const {isItemAdded} = useContext(AppContext);
+    //Если в корзине не найдется объекта с юрлом как у данной карточки, то иконка "добавлена в корзину" не отобразится
     //стейт для отображения добавления товара в корзину
-    const [isAdded, setIsAdded] = useState(added===true ? true : false);
+    const [isAdded, setIsAdded] = useState(isItemAdded(url));
+
+    //При каждом изменении функции isItemAdded из контекста , мы меняем стейт
+    useEffect(() => setIsAdded(isItemAdded(url)), [isItemAdded(url)])
+
     //стейт для отображения закладки
-    const [isFavorite, setIsFavorite] = useState(isAddedToFavorite);
+    const [isFavorite, setIsFavorite] = useState(favorited);
+
     //в зависимости от значения isAdded выдает строку содержащую название свг картинки
     const imgAddSrc = isAdded ? "added.svg" : "add.svg";
+
     //в зависимости от значения isAddedToFavorite выдаст либо лайк либо в зависимости от значения isFavorite выдает строку содержащую название свг картинки
     const imgFavSrc = isAddedToFavorite ? "liked.svg" : isFavorite ? "liked.svg" : "unliked.svg";
+
     //функция, инвертирующая значение isAdded при клике на кнопку
     const changeAddIcon = () => {
         onAdd({name, price, url});
         setIsAdded(prev => !prev);
     }
+
     //функция, инвертирующая значение isFavorite при клике на кнопку
     const changeFavoriteIcon = () => {
         onFavorite({name, price, url});
         setIsFavorite(prev => !prev);
     }
+
     return (
         <div className={cardStyles.card}>
             {isLoading ? (
@@ -41,7 +55,7 @@ const Card = ({ name, price, url, onAdd, onFavorite, isAddedToFavorite = false, 
             ) : (
                 <>
                     <div className={cardStyles.like}>
-                        <img src={"/image/" + imgFavSrc} alt="will u get like it?" onClick={changeFavoriteIcon}/>
+                        <img style={isOrder ? {display: "none", cursor:"default"}: {}} src={"/image/" + imgFavSrc} alt="will u get like it?" onClick={changeFavoriteIcon}/>
                     </div>
                     <img src={url} alt="url"/>
                     <p>{name}</p>
@@ -50,7 +64,7 @@ const Card = ({ name, price, url, onAdd, onFavorite, isAddedToFavorite = false, 
                             <p>Цена:</p>
                             <span>{price + " руб."}</span>
                         </div>
-                        <img src={"/image/" + imgAddSrc} alt="will add?" onClick={changeAddIcon}/>
+                        <img style={isOrder ? {display: "none", cursor:"default"}: {}} src={"/image/" + imgAddSrc} alt="will add?" onClick={changeAddIcon}/>
                     </div>
                 </>
                 )}
